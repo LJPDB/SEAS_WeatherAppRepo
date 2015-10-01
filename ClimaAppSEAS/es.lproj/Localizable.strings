@@ -1,0 +1,45 @@
+/*
+ Localizable.strings
+ ClimaAppSEAS
+ 
+ Created by Leonardo Puga De Biase on 8/11/15.
+ Copyright (c) 2015 Leonardo Puga De Biase. All rights reserved.
+ */
+/* Class = "UILabel"; text = "  Copyright (c) 2015 Leonardo Puga De Biase. All rights reserved."; ObjectID = "8ie-xW-0ye"; */
+"8ie-xW-0ye.text" = "  Copyright (c) 2015 Leonardo Puga De Biase. Todos los derechos reservados.";
+
+/* Class = "UILabel"; text = "ClimaAppSEAS"; ObjectID = "kId-c2-rCX"; */
+"kId-c2-rCX.text" = "Clima SEAS";
+
+"CFBundleDisplayName" = "Clima SEAS";
+
+"salute" = "Hola...!!";
+
+"language" = "es";
+
+"weather main title" = "Localidades favoritas";
+
+"settings block" = "Configuraciones";
+
+"back navbar" = "Atrás";
+
+"add location" = "Agregar ubicación";
+
+"presentation BEGIN button" = "Comenzar";
+
+"climate panorama" = "Panorama climático";
+
+"no internet conn title" = "Sin conexión a internet";
+"no internet conn content"="Conexion a internet requerida!";
+
+"country subtitle tableview" = "País: ";
+
+"last time updated"="Última fecha de actualización: ";
+
+"never"="Nunca";
+
+"humidity"="Humedad: ";
+"preassure"="Presión: ";
+"weather"="Clima: ";
+"latitude"="Latitud: ";
+"longitude"="Longitud: ";

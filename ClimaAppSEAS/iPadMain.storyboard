@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pbn-iI-Jbz">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--PresentationWeatherViewController-->
+        <scene sceneID="t1D-J4-DtD">
+            <objects>
+                <viewController title="PresentationWeatherViewController" id="pbn-iI-Jbz" customClass="PresentationViewControllerPhone" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="57u-l7-9OW"/>
+                        <viewControllerLayoutGuide type="bottom" id="37q-ej-acA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cKH-7m-dXy">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rB3-Tr-i16">
+                                <rect key="frame" x="189" y="501" width="207" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="207" id="w2z-S2-t8Z"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rB3-Tr-i16" firstAttribute="top" secondItem="57u-l7-9OW" secondAttribute="bottom" constant="481" id="M44-aF-nId"/>
+                            <constraint firstItem="rB3-Tr-i16" firstAttribute="leading" secondItem="cKH-7m-dXy" secondAttribute="leading" constant="189" id="W8P-R8-UOj"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="testLabelLocalized" destination="rB3-Tr-i16" id="zYA-3h-PKK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JwO-1A-qBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="642" y="342"/>
+        </scene>
+    </scenes>
+</document>
