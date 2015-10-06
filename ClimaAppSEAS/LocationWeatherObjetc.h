@@ -43,5 +43,6 @@
          enDirectorio: (NSString *) filePath  tambienDirectorioPrefs:(NSString *) PlistPreferenciasPath;
 
 +(void)deletePlisFileAtPath: (NSString *) filePath andAlsoPlistPreferences:(NSString *) PlistPreferences;
++(void)salvarAsyncPreferenciasICloud:(NSMutableDictionary *)preferences;
 
 @end

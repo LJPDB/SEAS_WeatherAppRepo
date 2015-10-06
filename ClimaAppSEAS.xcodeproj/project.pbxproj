@@ -22,6 +22,7 @@
 		8769A1C81B90E3CE0050FCC4 /* PresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1C71B90E3CE0050FCC4 /* PresentationViewController.m */; };
 		8769A1CB1B924F4F0050FCC4 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1CA1B924F4F0050FCC4 /* SettingsViewController.m */; };
 		8769A1CE1B926D4A0050FCC4 /* AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1CD1B926D4A0050FCC4 /* AddLocationViewController.m */; };
+		87A1F50D1BBE1ED100799BE0 /* FavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 87A1F50C1BBE1ED100799BE0 /* FavoriteTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		87D8FCD11B9E074F00FD2F5E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87D8FCD01B9E074F00FD2F5E /* CloudKit.framework */; };
 		87F5BC261B7AF67300F1EB07 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F5BC251B7AF67300F1EB07 /* main.m */; };
 		87F5BC291B7AF67300F1EB07 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F5BC281B7AF67300F1EB07 /* AppDelegate.m */; };
@@ -67,6 +68,8 @@
 		8769A1CA1B924F4F0050FCC4 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		8769A1CC1B926D4A0050FCC4 /* AddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddLocationViewController.h; sourceTree = "<group>"; };
 		8769A1CD1B926D4A0050FCC4 /* AddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddLocationViewController.m; sourceTree = "<group>"; };
+		87A1F50B1BBE1ED100799BE0 /* FavoriteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteTableViewController.h; sourceTree = "<group>"; };
+		87A1F50C1BBE1ED100799BE0 /* FavoriteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteTableViewController.m; sourceTree = "<group>"; };
 		87D8FCCF1B9E074C00FD2F5E /* ClimaAppSEAS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ClimaAppSEAS.entitlements; sourceTree = "<group>"; };
 		87D8FCD01B9E074F00FD2F5E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		87F5BC201B7AF67300F1EB07 /* ClimaAppSEAS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClimaAppSEAS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +143,8 @@
 				8769A1CA1B924F4F0050FCC4 /* SettingsViewController.m */,
 				8769A1CC1B926D4A0050FCC4 /* AddLocationViewController.h */,
 				8769A1CD1B926D4A0050FCC4 /* AddLocationViewController.m */,
+				87A1F50B1BBE1ED100799BE0 /* FavoriteTableViewController.h */,
+				87A1F50C1BBE1ED100799BE0 /* FavoriteTableViewController.m */,
 			);
 			name = controladores;
 			sourceTree = "<group>";
@@ -173,8 +178,8 @@
 				87D8FCCF1B9E074C00FD2F5E /* ClimaAppSEAS.entitlements */,
 				873526E91B9D181400198E29 /* CapaDeDatos */,
 				875423471B864C1C00903345 /* LaunchScreen.xib */,
-				875423421B8649D800903345 /* iPhoneMain.storyboard */,
 				875423431B8649D800903345 /* iPadMain.storyboard */,
+				875423421B8649D800903345 /* iPhoneMain.storyboard */,
 				875423361B86392300903345 /* controladores */,
 				87F5BC271B7AF67300F1EB07 /* AppDelegate.h */,
 				87F5BC281B7AF67300F1EB07 /* AppDelegate.m */,
@@ -332,6 +337,7 @@
 				8724318B1B9F5222005DC857 /* InternetWeatherSource.m in Sources */,
 				8769A1C51B90CCD10050FCC4 /* PageContentViewController.m in Sources */,
 				87F5BC261B7AF67300F1EB07 /* main.m in Sources */,
+				87A1F50D1BBE1ED100799BE0 /* FavoriteTableViewController.m in Sources */,
 				872431971B9FCC9C005DC857 /* MainViewController.m in Sources */,
 				8769A1C81B90E3CE0050FCC4 /* PresentationViewController.m in Sources */,
 				872431951B9F8B5E005DC857 /* UserActualLocation.m in Sources */,
@@ -469,6 +475,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ljpdb.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -485,6 +492,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ljpdb.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

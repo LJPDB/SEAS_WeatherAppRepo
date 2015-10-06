@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InternetWeatherSource.h"
+#import "FavoriteTableViewController.h"
+@class SettingsViewController;
 
-@interface SettingsViewController : UIViewController
+@protocol changeInPreferencesDelegate <NSObject>
+@required
+-(void) tempUnitChanged:(BOOL)itChanged;
+-(void) favoriteLocationsListChanged:(BOOL)listChanged;
+
+@end
+@interface SettingsViewController : UIViewController <FavoriteListChangedDelegate>
+
+@property (nonatomic, weak) id<changeInPreferencesDelegate> settingsChangedDelegate;
 
 @end

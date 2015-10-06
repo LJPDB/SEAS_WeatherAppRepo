@@ -148,19 +148,31 @@
 +(void)deleteLocation: (NSString *)idLocation
           enDirectorio: (NSString *) filePath  tambienDirectorioPrefs:(NSString *) PlistPreferenciasPath{
     NSMutableArray *auxLocationsList = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    NSMutableArray *auxLocationsListCopy = [[NSMutableArray alloc] initWithArray:auxLocationsList];
     int i = 0;
     for (LocationWeatherObjetc *aux in auxLocationsList) {
         if ([[NSString stringWithFormat:@"%@", [aux locationID]]isEqualToString:idLocation]) {
-            [auxLocationsList removeObjectAtIndex:i];
+            [auxLocationsListCopy removeObjectAtIndex:i];
         }
         i++;
     }
-    [LocationWeatherObjetc saveLocationsList:auxLocationsList enDirectorio:filePath  tambienDirectorioPrefs:(NSString *) PlistPreferenciasPath];
+    
+    [NSKeyedArchiver archiveRootObject:auxLocationsListCopy toFile:filePath];
+    NSMutableArray *onlyIDs = [[NSMutableArray alloc] init];
+    for (LocationWeatherObjetc *aux2 in auxLocationsListCopy){
+        [onlyIDs addObject:[NSString stringWithFormat:@"%@",[aux2 locationID]]];
+    }
+    NSMutableDictionary *prefs = [NSKeyedUnarchiver unarchiveObjectWithFile:PlistPreferenciasPath];
+    [prefs setObject:[onlyIDs componentsJoinedByString:@","] forKey:@"localidades"];
+    [NSKeyedArchiver archiveRootObject:prefs toFile:PlistPreferenciasPath];
+    
+    
+    [LocationWeatherObjetc salvarAsyncPreferenciasICloud:prefs];
 }
 
 +(void)saveLocationsList: (NSMutableArray *)locationsList
             enDirectorio: (NSString *) filePath  tambienDirectorioPrefs:(NSString *) PlistPreferenciasPath{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+   // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             NSMutableArray *auxLocationsList = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
             NSMutableArray *auxLocationsListCopy = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
@@ -204,7 +216,7 @@
             [prefs setObject:[onlyIDs componentsJoinedByString:@","] forKey:@"localidades"];
             [NSKeyedArchiver archiveRootObject:prefs toFile:PlistPreferenciasPath];
         }
-    });
+    //});
 }
 
 
@@ -212,6 +224,13 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager removeItemAtPath:filePath error:nil];
     [fileManager removeItemAtPath:PlistPreferences error:nil];
+}
+
++(void)salvarAsyncPreferenciasICloud:(NSMutableDictionary *)preferences{
+    //si es que hay internet, de haber internet, si es que existe o no en el icloud.
+    [[NSUbiquitousKeyValueStore defaultStore] setObject:preferences forKey:@"preferencias"];
+    [[NSUbiquitousKeyValueStore defaultStore] synchronize];
+    
 }
 
 +(NSMutableArray *)obtenerListaLocalidadesAlmacenadasEnPath: (NSString *)filePath{

@@ -37,6 +37,7 @@
 
 -(void)obtenerDatosLocalesConLatitude:(NSString *) latitud conLongitud: (NSString *) longitud conUnidadMedida:(NSString *)metricsUnit enIdioma:(NSString *) language;
 
+
 -(NSMutableArray *)obtenerListadoCiudadesPaises;
 
 +(NSString *)obtenerPreferencesPlistPath;

@@ -7,6 +7,7 @@
 //
 
 #import "PresentationViewController.h"
+#import "MainViewController.h"
 
 @interface PresentationViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *presentationBeginButton;
@@ -17,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _appDelegate =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NetworkStatus networkConn = [_appDelegate.testConnectionObject currentReachabilityStatus];
     

@@ -18,7 +18,7 @@
 
 "language" = "en";
 
-"weather main title" = "Favorite locations";
+"weather main title" = "Favorites";
 
 "settings block" = "Settings";
 
@@ -37,6 +37,8 @@
 "no location permission content"="Check the app permission to use your location info!";
 
 "last time updated"="Last date updated: ";
+"temperature unit preferences label" = "Temperature unit";
+"favorite locations list preference button"="Favorite locations list";
 
 "never"="Never";
 

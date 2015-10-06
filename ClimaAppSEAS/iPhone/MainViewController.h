@@ -10,12 +10,14 @@
 #import "LocationWeatherObjetc.h"
 #import "PageContentViewController.h"
 #import "UserActualLocation.h"
+#import "SettingsViewController.h"
 #import "AddLocationViewController.h"
+#import "PresentationViewController.h"
 #import "InternetWeatherSource.h"
 #import "AppDelegate.h"
 #import <CoreLocation/CoreLocation.h>
 
-@interface MainViewController : UIViewController <UIPageViewControllerDataSource,addLocationViewControllerDelegate,locationDidChangeDelegate,JSONreceivedDelegate>
+@interface MainViewController : UIViewController <UIPageViewControllerDataSource,addLocationViewControllerDelegate,locationDidChangeDelegate,JSONreceivedDelegate, changeInPreferencesDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addLocationButton;

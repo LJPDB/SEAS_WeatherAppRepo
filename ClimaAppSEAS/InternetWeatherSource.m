@@ -85,6 +85,8 @@
              id weatherDetails = [singleOne valueForKey:@"weather"];
              id coordDetails = [singleOne valueForKey:@"coord"];
              
+             float temp = [[mainDetails valueForKey:@"temp"] floatValue];
+             
              [localidadAux setLocationName:[singleOne valueForKey:@"name"]];
              [localidadAux setLocationID:[singleOne valueForKey:@"id"]];
              [localidadAux setHumidity:[mainDetails valueForKey:@"humidity"]];
@@ -92,7 +94,7 @@
              [localidadAux setWeather:[weatherDetails[0] valueForKey:@"description"]];
              [localidadAux setLocationLatitude:[coordDetails valueForKey:@"lat"]];
              [localidadAux setLocationLongitude:[coordDetails valueForKey:@"lon"]];
-             [localidadAux setTemperature:[NSString stringWithFormat:@"%@ %@",[mainDetails valueForKey:@"temp"], tempMeasureUnit]];
+             [localidadAux setTemperature:[NSString stringWithFormat:@"%.2f %@",temp, tempMeasureUnit]];
              [localidadAux setLocationParent:[sysDetails valueForKey:@"country"]];
              
              NSLog(@"InternetWeatherSource (obtener con ID): %@", localidadAux);
@@ -145,6 +147,8 @@
                  id weatherDetails = [singleOne valueForKey:@"weather"];
                  id coordDetails = [singleOne valueForKey:@"coord"];
                  
+                 float temp = [[mainDetails valueForKey:@"temp"] floatValue];
+                 
                  [localidadAux setLocationName:[singleOne valueForKey:@"name"]];
                  [localidadAux setLocationID:[singleOne valueForKey:@"id"]];
                  [listaIDLocalidades addObject:[singleOne valueForKey:@"id"]];
@@ -153,7 +157,7 @@
                  [localidadAux setWeather:[weatherDetails[0] valueForKey:@"description"]];
                  [localidadAux setLocationLatitude:[coordDetails valueForKey:@"lat"]];
                  [localidadAux setLocationLongitude:[coordDetails valueForKey:@"lon"]];
-                 [localidadAux setTemperature:[NSString stringWithFormat:@"%@ %@",[mainDetails valueForKey:@"temp"], tempMeasureUnit]];
+                 [localidadAux setTemperature:[NSString stringWithFormat:@"%.2f %@",temp, tempMeasureUnit]];
                  [localidadAux setLocationParent:[sysDetails valueForKey:@"country"]];
                  
                  [arregloLocalidades addObject:localidadAux];
@@ -168,6 +172,8 @@
          }
      }];
 }
+
+
 
 -(void)obtenerDatosLocalesConLatitude:(NSString *) latitud conLongitud: (NSString *) longitud conUnidadMedida:(NSString *)metricsUnit enIdioma:(NSString *) language{  //http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139
     NSLog(@"location en ObtenerDatos con latitud->%@ y longitud->%@", latitud, longitud);
@@ -197,6 +203,8 @@
              id weatherDetails = [singleOne valueForKey:@"weather"];
              id coordDetails = [singleOne valueForKey:@"coord"];
              
+             float temp = [[mainDetails valueForKey:@"temp"] floatValue];
+             
              [localidadAux setLocationName:[singleOne valueForKey:@"name"]];
              [localidadAux setLocationID:[singleOne valueForKey:@"id"]];
              [localidadAux setHumidity:[mainDetails valueForKey:@"humidity"]];
@@ -204,7 +212,7 @@
              [localidadAux setWeather:[weatherDetails[0] valueForKey:@"description"]];
              [localidadAux setLocationLatitude:[coordDetails valueForKey:@"lat"]];
              [localidadAux setLocationLongitude:[coordDetails valueForKey:@"lon"]];
-             [localidadAux setTemperature:[NSString stringWithFormat:@"%@ %@",[mainDetails valueForKey:@"temp"], tempMeasureUnit]];
+             [localidadAux setTemperature:[NSString stringWithFormat:@"%.2f %@", temp, tempMeasureUnit]];
              [localidadAux setLocationParent:[sysDetails valueForKey:@"country"]];
              
              [LocationWeatherObjetc saveCurrentLocationOnly:localidadAux enDirectorio:_directorioPlist tambienDirectorioPrefs:(NSString *) _directorioPlistPreferencias];

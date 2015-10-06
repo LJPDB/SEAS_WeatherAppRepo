@@ -16,6 +16,8 @@
 
 @property (nonatomic) int testNumber;
 
+@property (nonatomic, retain) NSDate *dateUpdated;
+
 @end
 
 
@@ -116,6 +118,9 @@
         nextController.delegate = self;
         [nextController setListadoCiudadesPaises:[_weatherWebsiteObject obtenerListadoCiudadesPaises]];
         NSLog(@"Segue number of elements: %lu", (unsigned long)_weatherWebsiteObject.listadoCiudadesPaises.count);
+    }else{
+        SettingsViewController *nextController = segue.destinationViewController;
+        nextController.settingsChangedDelegate = self;
     }
 }
 
@@ -213,6 +218,32 @@
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
 {
     return 0;
+}
+
+#pragma mark - Cambios en las preferencias delegate
+-(void)tempUnitChanged:(BOOL)itChanged{
+    if (itChanged) {
+        //refrescar datos en el servidor!!
+        NSLog(@"Cambio la preferencia de unidad de medicion y es: %@", [self obtenerMedicionPref]);
+        dispatch_async(dispatch_get_main_queue(), ^{            
+            [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[[self obtenerListaLocalidades] componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
+            _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
+            [self createPageviewerPerItem];
+
+        });
+    }
+}
+-(void)favoriteLocationsListChanged:(BOOL)listChanged{
+    if (listChanged) {
+        //refrescar datos en el servidor!!
+        NSLog(@"Cambio la preferencia de lista de ciudades..!!");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[[self obtenerListaLocalidades] componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
+            _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
+            [self createPageviewerPerItem];
+        });
+        
+    }
 }
 
 #pragma mark - LocationChangedDelegate

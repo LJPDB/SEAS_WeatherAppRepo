@@ -17,7 +17,7 @@
 
 "language" = "es";
 
-"weather main title" = "Localidades favoritas";
+"weather main title" = "Favoritos";
 
 "settings block" = "Configuraciones";
 
@@ -35,6 +35,8 @@
 "country subtitle tableview" = "País: ";
 
 "last time updated"="Última fecha de actualización: ";
+"temperature unit preferences label" = "Unidad de temperatura";
+"favorite locations list preference button"="Lista de locaciones favoritas";
 
 "never"="Nunca";
 
