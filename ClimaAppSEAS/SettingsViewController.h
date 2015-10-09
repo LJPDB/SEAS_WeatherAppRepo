@@ -19,6 +19,7 @@
 @end
 @interface SettingsViewController : UIViewController <FavoriteListChangedDelegate>
 
+@property (nonatomic) NSString *dateFromMain;
 @property (nonatomic, weak) id<changeInPreferencesDelegate> settingsChangedDelegate;
 
 @end

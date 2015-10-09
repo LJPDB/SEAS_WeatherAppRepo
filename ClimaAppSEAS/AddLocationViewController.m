@@ -9,7 +9,8 @@
 #import "AddLocationViewController.h"
 
 @interface AddLocationViewController ()
-//@property (weak, nonatomic) IBOutlet UILabel *hiddenCellLabel;
+
+@property (strong, nonatomic, retain) NSMutableArray *resultadoBusqueda;
 
 @end
 
@@ -18,9 +19,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"addLocation listado de paises: %lu", (unsigned long)_listadoCiudadesPaises.count);
-    id aux = _listadoCiudadesPaises[0];
+    id aux = _listadoCiudadesPaises;
 
-    NSLog(@"addLocation objeto paises: %@", [aux valueForKey:@"name"]);
+    
+    //NSLog(@"addLocation objeto paises: %@", [aux valueForKey:@"name"]);
+    _resultadoBusqueda = [[NSMutableArray alloc] init];
     // Do any additional setup after loading the view.
 }
 
@@ -50,28 +53,41 @@
 #pragma mark - Display and selection in tableView
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"citiesCountriesCell"];
+    
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"citiesCountriesCell"];
     id aux = _listadoCiudadesPaises[indexPath.row];
-    //NSLog(@"nombre desde la funcion de armado de la tabla: %@", [aux valueForKey:@"name"]);
-    cell.textLabel.text = [aux valueForKey:@"name"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[aux valueForKey:@"country"]];
     UILabel *label = (UILabel *)[cell.contentView viewWithTag:1];
-    [label setText:[NSString stringWithFormat:@"%@", [aux valueForKey:@"_id"]]];
-   // [self.hiddenCellLabel setText:[NSString stringWithFormat:@"test %ld", (long)indexPath.row]];
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        cell.textLabel.text = [[self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"name"];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[[self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"country"]];
+        [label setText:[NSString stringWithFormat:@"%@", [[self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"_id"]]];
+    } else {
+        //NSLog(@"nombre desde la funcion de armado de la tabla: %@", [aux valueForKey:@"name"]);
+        [_resultadoBusqueda removeAllObjects];
+        cell.textLabel.text = [aux valueForKey:@"name"];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[aux valueForKey:@"country"]];
+        [label setText:[NSString stringWithFormat:@"%@", [aux valueForKey:@"_id"]]];
+        // [self.hiddenCellLabel setText:[NSString stringWithFormat:@"test %ld", (long)indexPath.row]];
+
+    }
     
     return  cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-  //  NSString *cellTitle = selectedCell.textLabel.text;
-  //  NSString *cellSubtitle = selectedCell.detailTextLabel.text;
-    UILabel *taggedLabel =(UILabel*) [selectedCell.contentView viewWithTag:1];
-    NSString *labelID = taggedLabel.text;
+    NSString *locationID;
+    if (tableView==self.searchDisplayController.searchResultsTableView) {
+        locationID = (NSString *)[  [self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"locationID"];
+    } else {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        UILabel *taggedLabel =(UILabel*) [selectedCell.contentView viewWithTag:1];
+        locationID = taggedLabel.text;
+    }
     
     //NSLog(@"row toucheada: \n Localidad -> %@ \n  Pais -> %@ \n ID -> %@", cellTitle, cellSubtitle, labelID);
    
-    [self.delegate addedLocation:labelID];
+    [self.delegate addedLocation:locationID];
     
     [self.navigationController popViewControllerAnimated:YES];
     
@@ -79,7 +95,49 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _listadoCiudadesPaises.count;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return _resultadoBusqueda.count;
+    } else {
+        return _listadoCiudadesPaises.count;
+    }
 }
+
+
+#pragma Metodos delegados de Barra de busqueda
+
+-(void)filterContentForSearchText:(NSString *)searchText scope:(NSString *) scope{
+    //NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+    //id aux = self.listadoCiudadesPaises ;
+    //self.resultadoBusqueda = [[aux valueForKey:@"name"] filteredArrayUsingPredicate:resultPredicate];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+        //[_resultadoBusqueda removeAllObjects];
+        int count = 0;
+        for (id strObj in _listadoCiudadesPaises)
+        {
+            if ([ [strObj valueForKey:@"name"] containsString:searchText ]){
+                //NSLog (@"Found: %@", strObj);
+                [_resultadoBusqueda addObject:strObj];
+            }
+            count ++;
+        }
+        [self.tableView reloadData];
+    //});
+}
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    [self filterContentForSearchText:searchString scope:@"Title"];
+    return YES;
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption{
+    [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:@"Title"];
+    return YES;
+}
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [_resultadoBusqueda removeAllObjects];
+}
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    //[_resultadoBusqueda removeAllObjects];
+}
+
 
 @end

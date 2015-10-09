@@ -15,7 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *ultimaVezActualizadoLabel;
 @property (weak, nonatomic) IBOutlet UIButton *listaFavoritosButton;
 @property (nonatomic) NSString *dateUpdated;
+
 @property (weak, nonatomic) IBOutlet UISegmentedControl *CelsiusFahrenheitControl;
+
 
 @end
 
@@ -26,8 +28,8 @@
 }
 
 - (void)viewDidLoad {
-    self.dateUpdated = [[NSString alloc] initWithFormat:@"%@", NSLocalizedString(@"never", nil)];
-    self.ultimaVezActualizadoLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"last time updated", nil), self.dateUpdated];
+    self.dateUpdated = [[NSString alloc] initWithFormat:@"%@", self.dateFromMain];
+    self.ultimaVezActualizadoLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"last time updated", nil), self.dateFromMain];
     self.unidadMedicionTemperaturaLabel.text = [[NSString alloc] initWithFormat:@"%@", NSLocalizedString(@"temperature unit preferences label", nil)];
     [self.listaFavoritosButton setTitle:NSLocalizedString(@"favorite locations list preference button", nil) forState:UIControlStateNormal];
     

@@ -95,7 +95,8 @@
             [NSKeyedArchiver archiveRootObject:preferenciasAUX toFile:PlistPreferenciasPath];
             //[LocationWeatherObjetc saveLocationsList:auxLocationsList enDirectorio:filePath];
         }else{
-            NSMutableArray *locationsList = [[NSMutableArray alloc] initWithObjects:localPosition, nil];
+            NSMutableArray *locationsList = [[NSMutableArray alloc] initWithObjects:[localPosition valueForKey:@"locationID"], nil];
+            
             [NSKeyedArchiver archiveRootObject:locationsList toFile:PlistPreferenciasPath];
         }
         
@@ -148,18 +149,18 @@
 +(void)deleteLocation: (NSString *)idLocation
           enDirectorio: (NSString *) filePath  tambienDirectorioPrefs:(NSString *) PlistPreferenciasPath{
     NSMutableArray *auxLocationsList = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    NSMutableArray *auxLocationsListCopy = [[NSMutableArray alloc] initWithArray:auxLocationsList];
-    int i = 0;
+    int i = 0, indexToDelete = 0;
     for (LocationWeatherObjetc *aux in auxLocationsList) {
         if ([[NSString stringWithFormat:@"%@", [aux locationID]]isEqualToString:idLocation]) {
-            [auxLocationsListCopy removeObjectAtIndex:i];
+            indexToDelete = i;
         }
         i++;
     }
-    
-    [NSKeyedArchiver archiveRootObject:auxLocationsListCopy toFile:filePath];
+    [auxLocationsList removeObjectAtIndex:indexToDelete];
+    [NSKeyedArchiver archiveRootObject:auxLocationsList toFile:filePath];
+    // aqui el borrado del ID en las preferencias
     NSMutableArray *onlyIDs = [[NSMutableArray alloc] init];
-    for (LocationWeatherObjetc *aux2 in auxLocationsListCopy){
+    for (LocationWeatherObjetc *aux2 in auxLocationsList){
         [onlyIDs addObject:[NSString stringWithFormat:@"%@",[aux2 locationID]]];
     }
     NSMutableDictionary *prefs = [NSKeyedUnarchiver unarchiveObjectWithFile:PlistPreferenciasPath];
@@ -180,21 +181,26 @@
             BOOL exist = NO;
             int atIndex = 0;
             for (LocationWeatherObjetc *aux in locationsList) {
-                for (LocationWeatherObjetc *auxItemFile in auxLocationsListCopy) {
-                    if ([aux locationID]==[auxItemFile  locationID]) {
-                        exist = YES;
-                        atIndex = j;
+                if (i==0) {
+                    [auxLocationsList replaceObjectAtIndex:i withObject:aux];
+                    i++;
+                } else {
+                    for (LocationWeatherObjetc *auxItemFile in auxLocationsListCopy) {
+                        if ([aux locationID]==[auxItemFile  locationID]) {
+                            exist = YES;
+                            atIndex = j;
+                        }
+                        j++;
                     }
-                    j++;
+                    if(exist){
+                        [auxLocationsList replaceObjectAtIndex:atIndex withObject:aux];
+                    }else{
+                        [auxLocationsList addObject:aux];
+                    }
+                    exist = NO;
+                    i++;
+                    j=0;
                 }
-                if(exist){
-                    [auxLocationsList replaceObjectAtIndex:atIndex withObject:aux];
-                }else{
-                    [auxLocationsList addObject:aux];
-                }
-                exist = NO;
-                i++;
-                j=0;
             }
             [NSKeyedArchiver archiveRootObject:auxLocationsList toFile:filePath];
             NSMutableArray *auxLocationsListOnlyIDs = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];

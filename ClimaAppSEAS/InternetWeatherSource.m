@@ -129,8 +129,6 @@
                                                           options:0
                                                             error:NULL];
              NSLog(@"REST API > internetWeatherSource (obtenerCiudadesLista ListaIDs): %@ \n\n", resultado);
-#warning aqui debo meter los valores o el valor en el userDefaults y luego en el mainviewcontroller refrescar el paginador y subir cambios al icloud
-             //NSUserDefaults *appUserDefaults = [NSUserDefaults standardUserDefaults];
              
              NSMutableArray *arregloLocalidades = [[NSMutableArray alloc] init];
              
@@ -215,7 +213,7 @@
              [localidadAux setTemperature:[NSString stringWithFormat:@"%.2f %@", temp, tempMeasureUnit]];
              [localidadAux setLocationParent:[sysDetails valueForKey:@"country"]];
              
-             [LocationWeatherObjetc saveCurrentLocationOnly:localidadAux enDirectorio:_directorioPlist tambienDirectorioPrefs:(NSString *) _directorioPlistPreferencias];
+             [LocationWeatherObjetc saveCurrentLocationOnly:localidadAux enDirectorio:_directorioPlist tambienDirectorioPrefs:_directorioPlistPreferencias];
              [self.JSONchangedDelegate currentPositionJSONobjChanged:singleOne];
              
              //return requestResultAux;

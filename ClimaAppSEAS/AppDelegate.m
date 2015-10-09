@@ -25,7 +25,7 @@
                                                [UIColor blackColor], UITextAttributeTextShadowColor,
                                                [NSValue valueWithUIOffset:UIOffsetMake(-1, 0)], UITextAttributeTextShadowOffset, nil];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
+    [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes]; 
     //[[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 
     _testConnectionObject = [Reachability reachabilityForInternetConnection];
@@ -68,9 +68,12 @@
 }
 
 -(void)guardarDatosICloud{
-    NSMutableDictionary *preferenciasAUX = [[NSMutableDictionary alloc] initWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:[InternetWeatherSource obtenerPreferencesPlistPath]]];
-    [[NSUbiquitousKeyValueStore defaultStore] setObject:preferenciasAUX forKey:@"preferencias"];
-    [[NSUbiquitousKeyValueStore defaultStore] synchronize];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[InternetWeatherSource obtenerPreferencesPlistPath]]) {
+        NSMutableDictionary *preferenciasAUX = [[NSMutableDictionary alloc] initWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:[InternetWeatherSource obtenerPreferencesPlistPath]]];
+        [[NSUbiquitousKeyValueStore defaultStore] setObject:preferenciasAUX forKey:@"preferencias"];
+        [[NSUbiquitousKeyValueStore defaultStore] synchronize];
+    }
+    
 }
 
 @end

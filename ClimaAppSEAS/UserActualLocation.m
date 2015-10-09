@@ -35,13 +35,21 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([self.gestionadorUbicacion respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
                 [self.gestionadorUbicacion requestWhenInUseAuthorization];
+                [self.gestionadorUbicacion requestAlwaysAuthorization];
+                if ( ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusNotDetermined) && ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusRestricted) && ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusDenied) ) {
+                    [self.gestionadorUbicacion startMonitoringSignificantLocationChanges];
+                    [self ubicacionActual];
+                }
             }
             if ([self.gestionadorUbicacion respondsToSelector:@selector(requestForLocatePermission)]) {
-                [self.gestionadorUbicacion requestAlwaysAuthorization];
+                [self.gestionadorUbicacion requestLocation];
+                if ( ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusNotDetermined) && ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusRestricted) && ([CLLocationManager authorizationStatus]!=kCLAuthorizationStatusDenied) ) {
+                    [self.gestionadorUbicacion startMonitoringSignificantLocationChanges];
+                    [self ubicacionActual];
+                }
             }
         });
-        [self.gestionadorUbicacion startMonitoringSignificantLocationChanges];
-
+        
         
         return TRUE;
     }else{
@@ -53,6 +61,7 @@
     CLLocation* location = [locations lastObject];
     NSDate* eventDate = location.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    [self.locationChangedDelegate locationDidChange:location];
     if (fabs(howRecent) < 15.0) {
         // If the event is recent, do something with it.
         [self.locationChangedDelegate locationDidChange:location];

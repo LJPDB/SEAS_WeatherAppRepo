@@ -12,11 +12,14 @@
 
 @property (nonatomic, strong) NSUbiquitousKeyValueStore *iCloudStore;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicadorCarga;
+@property (strong, nonatomic) IBOutlet UIView *contenedorViewPrincipal;
+@property NSTimer *temporizador;
 @property (nonatomic, retain) NSString *UCIdentifier;
 
 @property (nonatomic) int testNumber;
 
-@property (nonatomic, retain) NSDate *dateUpdated;
+@property (nonatomic, retain) NSString *dateUpdated;
 
 @end
 
@@ -24,9 +27,9 @@
 @implementation MainViewController
 
 - (void)viewDidLoad {
+    self.indicadorCarga.hidesWhenStopped = YES;
     [super viewDidLoad];
-    
-    
+    _dateUpdated = [[NSString alloc] initWithFormat:@"%@", NSLocalizedString(@"never", nil)];
     _weatherWebsiteObject = [[InternetWeatherSource alloc] init];
     [_weatherWebsiteObject inicializarValoresAPIKeyResultado];
     _weatherWebsiteObject.JSONchangedDelegate = self;
@@ -48,19 +51,21 @@
     NetworkStatus networkConn = [appDelegateAUX.testConnectionObject currentReachabilityStatus];
     
     if (networkConn != NotReachable) {  //networkStatus
-#warning [self mostrarValoresEnUI]; aqui debe llamarse a la funcion que pinte toooooodo lo que se trajo del icloud o los valores por defecto siempre tomando como unico punto de referencia, lo que este en el userDefaults
-        
         _objetoUbicacion = [[UserActualLocation alloc] init];
         _objetoUbicacion.locationChangedDelegate = self;
         
         if (_objetoUbicacion.requestForLocatePermission) {
-            [_objetoUbicacion ubicacionActual];
+           // [_objetoUbicacion ubicacionActual];
         } else {
             NSMutableArray *listaIDLocalidadesAlmacenadas = [self obtenerListaLocalidades];
             if (![listaIDLocalidadesAlmacenadas[0]isEqualToString:@"empty"]) {
-                _pageTitles = [[NSMutableArray alloc] initWithArray:listaIDLocalidadesAlmacenadas];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[listaIDLocalidadesAlmacenadas componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
+                    _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
+                    [self createPageviewerPerItem];
+                    _dateUpdated = [[NSString alloc] initWithFormat:@"%@", [self obtenerFechaActual]];
+                    [self.indicadorCarga stopAnimating];
+                    [self.indicadorCarga removeFromSuperview];
                 });
             } else {
                 // que hacer cuando no hay nada....
@@ -73,32 +78,33 @@
     } else {
         NSMutableArray *listaLocalidadesAlmacenadas = [self obtenerListaLocalidadesNoInternet];
         if (listaLocalidadesAlmacenadas.count>0) {
-#warning pintar las localidades
             _pageTitles = [[NSMutableArray alloc] initWithArray:listaLocalidadesAlmacenadas];
+            [self createPageviewerPerItem];
         }
         [self imprimirAlertaSimpleConMensaje:[NSString stringWithFormat:@"%@", NSLocalizedString(@"no internet conn content", nil)] conTitulo:[NSString stringWithFormat:@"%@", NSLocalizedString(@"no internet conn title", nil)]];
     }
     
-    
+    [self.contenedorViewPrincipal addSubview:self.indicadorCarga];
+    self.temporizador = [NSTimer scheduledTimerWithTimeInterval:(1.0/2.0) target:self selector:@selector(cargandoMain) userInfo:nil repeats:YES];
     
 }
 
+-(void)cargandoMain{
+    if (! self.contenedorViewPrincipal) {
+        [self.indicadorCarga stopAnimating];
+    } else {
+        [self.indicadorCarga startAnimating];
+    }
+}
 -(void)viewWillAppear:(BOOL)animated{
     self.navigationItem.title = NSLocalizedString(@"weather main title", nil);
     //_testNumber++;
     //NSLog(@"test number in viewWillAppear: %i", _testNumber);
-    
     [super viewWillAppear:animated];
 }
 
+
 -(void)viewDidAppear:(BOOL)animated{
-    //[_objetoUbicacion ubicacionActual];
-    //UserActualLocation *locationObj = [[UserActualLocation alloc] init];
-   /* if (![self.objetoUbicacion revisarPermisosLocalizacion]) {
-        //[locationObj ubicacionActual];
-        [self imprimirAlertaSimpleConMensaje:[NSString stringWithFormat:@"%@", NSLocalizedString(@"no location permission content", nil)] conTitulo:[NSString stringWithFormat:@"%@", NSLocalizedString(@"no location permission title", nil)]];
-    }*/
-    //[self imprimirAlertaSimpleConMensaje:[NSString stringWithFormat:@"%lu",(unsigned long)[self.pageTitles count]] conTitulo:@"numero de paginas"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,7 +126,9 @@
         NSLog(@"Segue number of elements: %lu", (unsigned long)_weatherWebsiteObject.listadoCiudadesPaises.count);
     }else{
         SettingsViewController *nextController = segue.destinationViewController;
+        nextController.dateFromMain = _dateUpdated;
         nextController.settingsChangedDelegate = self;
+        
     }
 }
 
@@ -171,7 +179,6 @@
     pageContentViewController.locationName = [NSString stringWithFormat:@"%@", locName];
     pageContentViewController.countryName = [NSString stringWithFormat:@"%@", locParent];
     pageContentViewController.temperature = [NSString stringWithFormat:@"%@", locTemp];
-    //pageContentViewController.temperatureMeasurement = [self obtenerMedicionPref];
     pageContentViewController.humidity = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"humidity", nil), humidity]];
     pageContentViewController.preassure = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"preassure", nil), preassure]];
     pageContentViewController.weather = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"weather", nil), weather]];
@@ -179,7 +186,7 @@
     pageContentViewController.longitude = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"longitude", nil), longitude]];
     //NSLog(@"labels array: %@", self.pageTitles[index]);
     pageContentViewController.pageIndex = index;
-    
+    [self.indicadorCarga stopAnimating];
     return pageContentViewController;
 }
 
@@ -228,8 +235,11 @@
         dispatch_async(dispatch_get_main_queue(), ^{            
             [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[[self obtenerListaLocalidades] componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
             _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
-            [self createPageviewerPerItem];
+            _dateUpdated = [[NSString alloc] initWithFormat:@"%@", [self obtenerFechaActual]];
+            [self.indicadorCarga stopAnimating];
+            [self.indicadorCarga removeFromSuperview];
 
+            [self createPageviewerPerItem];
         });
     }
 }
@@ -240,6 +250,10 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[[self obtenerListaLocalidades] componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
             _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
+            _dateUpdated = [[NSString alloc] initWithFormat:@"%@", [self obtenerFechaActual]];
+            [self.indicadorCarga stopAnimating];
+            [self.indicadorCarga removeFromSuperview];
+
             [self createPageviewerPerItem];
         });
         
@@ -268,10 +282,6 @@
             NSLog(@"entre en el ELSE del if del empty");
             [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:[listaIDLocalidadesAlmacenadas componentsJoinedByString:@","] conUnidadMedida:[self obtenerMedicionPref] enIdioma:[self obtenerIdioma]];
         }
-#warning [self mostrarValoresEnUI]; luego de esto deben pintarse los cambios nuevamente!
-        
-       
-       // [_weatherWebsiteObject obtenerCiduadesPaisesPorListaIDs:@"524901,703448,2643743" conUnidadMedida:@"metric" enIdioma:@"es"];
     });
 
 }
@@ -279,8 +289,11 @@
 -(void)otherLocationsJSONobjChanged:(id)JSONobj{
     NSLog(@"JSON Lista de CIUDADES: %@", JSONobj);
     _pageTitles = [[NSMutableArray alloc] initWithArray: [self obtenerListaLocalidadesNoInternet]];
+    _dateUpdated = [[NSString alloc] initWithFormat:@"%@", [self obtenerFechaActual]];
+    [self.indicadorCarga stopAnimating];
+    [self.indicadorCarga removeFromSuperview];
+
     [self createPageviewerPerItem];
-    #warning aqui debe actualizarse la pocision actual en el arreglo del Plist y luego en la variable de icloud para que se sincronice y luego se pinta pero eso es en el viewDidLoad y en cualquier otro que haga falta...
 }
 
 
@@ -330,30 +343,6 @@
     NSArray *valores = @[@"metric", @"empty"];
     NSMutableDictionary *preferencias = [[NSMutableDictionary alloc] initWithObjects:valores forKeys:llaves];
     
-  /*  LocationWeatherObjetc *location1 = [[LocationWeatherObjetc alloc] init];
-    [location1 setLocationName:@"Italy"];
-    [location1 setLocationLatitude:@"323232323.32323"];
-    [location1 setLocationLongitude:@"323232.43"];
-    [location1 setPreasure:@"234.4"];
-    [location1 setHumidity:@"10"];
-    [location1 setSeaLevel:@"785"];
-    
-    LocationWeatherObjetc *location2 = [[LocationWeatherObjetc alloc] init];
-    [location2 setLocationName:@"Spain"];
-    [location2 setLocationLatitude:@"323232323.32323"];
-    [location2 setLocationLongitude:@"323232.43"];
-    [location2 setPreasure:@"234.4"];
-    [location2 setHumidity:@"10"];
-    [location2 setSeaLevel:@"785"];
-    
-    NSMutableArray *localidadesTest = [[NSMutableArray alloc] initWithObjects:location1,location2, nil];
-    [preferencias setValue:localidadesTest forKey:@"localidades"];
-    
-    NSMutableArray *localidades = [[NSMutableArray alloc] initWithArray:[preferencias valueForKey:@"localidades"]];
-    NSLog(@"preferencias localidades: %@", [preferencias valueForKey:@"localidades"]);
-    LocationWeatherObjetc *aux = localidades[0];
-    NSLog(@"localidades pos 0: %@", aux.locationName);  */
-    
     return preferencias;
 }
 
@@ -361,8 +350,6 @@
                   setearObseverParaVariable:(NSUbiquitousKeyValueStore *)iCloudStore{
     // iCloud - configuracion de la cuenta/sincronizacion
     NSURL *iCloud = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:UCIdentifier];
-    
-#warning mientras pruebo voy a siempre eliminar la variable del icloud
     //[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:@"preferencias"];
     
     ///************************///
@@ -424,6 +411,15 @@
                           otherButtonTitles:nil, nil];
     [alert show];
 
+}
+
+-(NSString *)obtenerFechaActual{
+    NSDate *today = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"dd/MM/yyyy hh:mm:ss"];
+    NSString *dateString = [dateFormat stringFromDate:today];
+    NSLog(@"date: %@", dateString);
+    return dateString;
 }
 
 @end

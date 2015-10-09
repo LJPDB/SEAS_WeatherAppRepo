@@ -15,7 +15,8 @@
 
 @end
 
-@interface AddLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface AddLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, weak) id<addLocationViewControllerDelegate> delegate;
 @property (nonatomic) NSMutableArray *listadoCiudadesPaises;

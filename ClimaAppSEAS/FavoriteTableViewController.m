@@ -13,7 +13,6 @@
 @property (nonatomic) NSString *directorioPlist;
 @property (nonatomic) NSString *directorioPlistPreferencias;
 @property (nonatomic, strong) NSMutableArray *listaLocalidadesCompletas;
-@property (nonatomic, strong) NSMutableArray *listaLocalidadesCompletasCopy;
 @property (nonatomic) NSMutableDictionary *listaLocalidadesIDs;
 @end
 
@@ -33,7 +32,6 @@
     _directorioPlistPreferencias = plist2.path;
     _listaLocalidadesIDs = [[NSMutableDictionary alloc] initWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithFile:_directorioPlistPreferencias]];
     _listaLocalidadesCompletas = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithFile:_directorioPlist]];
-    _listaLocalidadesCompletasCopy = [[NSMutableArray alloc] initWithArray:_listaLocalidadesCompletas];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -50,8 +48,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-   // _listaLocalidadesCompletasCopy = _listaLocalidadesCompletas;
-    return _listaLocalidadesCompletasCopy.count;
+    return _listaLocalidadesCompletas.count;
 }
 
 
@@ -63,11 +60,11 @@
     mainLabel.tag = 10;
     mainLabel.font = [UIFont systemFontOfSize:14.0];
     mainLabel.textColor = [UIColor blackColor];
-    [mainLabel setText:[NSString stringWithFormat:@"%@", [_listaLocalidadesCompletasCopy[indexPath.row] valueForKey:@"locationID"]]];
+    [mainLabel setText:[NSString stringWithFormat:@"%@", [_listaLocalidadesCompletas[indexPath.row] valueForKey:@"locationID"]]];
     [cell.contentView addSubview:mainLabel];
     
-    cell.textLabel.text = [_listaLocalidadesCompletasCopy[indexPath.row] valueForKey:@"locationName"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[_listaLocalidadesCompletasCopy[indexPath.row] valueForKey:@"locationParent"]];
+    cell.textLabel.text = [_listaLocalidadesCompletas[indexPath.row] valueForKey:@"locationName"];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[_listaLocalidadesCompletas[indexPath.row] valueForKey:@"locationParent"]];
     
     
     //[cell.contentView addSubview:label];
@@ -127,12 +124,16 @@
     NSLog(@"ID a eliminar: %@ at index: %ld", mainLabel.text, index);
     NSString *auxLocationID=[[NSString alloc] init];
     NSString *labelLocationID=[[NSString alloc] initWithFormat:@"%@", mainLabel.text];
+    int indexToDelete = 0, i = 0;
     for (LocationWeatherObjetc *aux in _listaLocalidadesCompletas) {
         auxLocationID = [NSString stringWithFormat:@"%@", [aux locationID]];
         if ([auxLocationID isEqualToString:labelLocationID]) {
-            [_listaLocalidadesCompletasCopy removeObjectAtIndex:index];
+            indexToDelete = i;
         }
-    }   
+        i++;
+    }
+    [_listaLocalidadesCompletas removeObjectAtIndex:indexToDelete];
+
     
    // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [LocationWeatherObjetc deleteLocation:mainLabel.text enDirectorio:_directorioPlist tambienDirectorioPrefs:_directorioPlistPreferencias];
