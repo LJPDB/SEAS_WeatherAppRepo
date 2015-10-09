@@ -22,8 +22,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                                 <animations/>
                             </imageView>
-                            <button opaque="NO" alpha="0.89999999999999991" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DX-FC-abm">
-                                <rect key="frame" x="296" y="744" width="176" height="61"/>
+                            <button opaque="NO" alpha="0.89999999999999991" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DX-FC-abm">
+                                <rect key="frame" x="296" y="744" width="176" height="40"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.41778710425181464" green="0.71202044557235611" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -46,8 +46,8 @@
                                     <segue destination="Yfr-KJ-yZL" kind="show" identifier="beginMainSegue" id="sKN-fa-eyT"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h3-HZ-TeF">
-                                <rect key="frame" x="363" y="407" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h3-HZ-TeF">
+                                <rect key="frame" x="360" y="407" width="49" height="24"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -114,8 +114,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-J9-qLb">
-                                <rect key="frame" x="20" y="75" width="592" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vl7-J9-qLb">
+                                <rect key="frame" x="20" y="75" width="592" height="0.0"/>
                                 <animations/>
                                 <color key="tintColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -256,8 +256,19 @@
                     <view key="view" contentMode="scaleToFill" id="URz-GZ-7c1">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Fzc-yb-Wkv">
+                                <rect key="frame" x="366" y="461" width="37" height="37"/>
+                                <animations/>
+                                <color key="color" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Fzc-yb-Wkv" firstAttribute="centerY" secondItem="URz-GZ-7c1" secondAttribute="centerY" id="M4R-vo-VfT"/>
+                            <constraint firstItem="Fzc-yb-Wkv" firstAttribute="centerX" secondItem="URz-GZ-7c1" secondAttribute="centerX" id="aMV-9g-kH7"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="EIh-Rb-GUW">
@@ -277,6 +288,8 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="addLocationButton" destination="ICr-WR-xM3" id="ZF8-7y-T6d"/>
+                        <outlet property="contenedorViewPrincipal" destination="URz-GZ-7c1" id="0kR-za-HNW"/>
+                        <outlet property="indicadorCarga" destination="Fzc-yb-Wkv" id="1Pt-ag-vkQ"/>
                         <outlet property="settingsButton" destination="Zdf-WH-xJq" id="z6w-qz-SLB"/>
                     </connections>
                 </viewController>
@@ -418,8 +431,8 @@
                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="shadowOffset" width="-1" height="1"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QC5-1m-wqj">
-                                <rect key="frame" x="582" y="307" width="73" height="38"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QC5-1m-wqj">
+                                <rect key="frame" x="582" y="307" width="73" height="0.0"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="73" id="z71-KK-Kx5"/>
