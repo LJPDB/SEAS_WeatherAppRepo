@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id<locationDidChangeDelegate> locationChangedDelegate;
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations;
++(void)stopLocationManagerMonitor;
 //- (CLLocation *)ubicacionActual;
 -(void)ubicacionActual;
 -(BOOL)requestForLocatePermission;

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserActualLocation.h"
 #import "Reachability.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

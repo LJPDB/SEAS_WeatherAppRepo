@@ -64,7 +64,7 @@
         [label setText:[NSString stringWithFormat:@"%@", [[self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"_id"]]];
     } else {
         //NSLog(@"nombre desde la funcion de armado de la tabla: %@", [aux valueForKey:@"name"]);
-        [_resultadoBusqueda removeAllObjects];
+        //[_resultadoBusqueda removeAllObjects];
         cell.textLabel.text = [aux valueForKey:@"name"];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"country subtitle tableview", nil),[aux valueForKey:@"country"]];
         [label setText:[NSString stringWithFormat:@"%@", [aux valueForKey:@"_id"]]];
@@ -78,14 +78,12 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *locationID;
     if (tableView==self.searchDisplayController.searchResultsTableView) {
-        locationID = (NSString *)[  [self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"locationID"];
+        locationID = (NSString *)[  [self.resultadoBusqueda objectAtIndex:indexPath.row] valueForKey:@"_id"];
     } else {
         UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
         UILabel *taggedLabel =(UILabel*) [selectedCell.contentView viewWithTag:1];
         locationID = taggedLabel.text;
     }
-    
-    //NSLog(@"row toucheada: \n Localidad -> %@ \n  Pais -> %@ \n ID -> %@", cellTitle, cellSubtitle, labelID);
    
     [self.delegate addedLocation:locationID];
     
@@ -110,7 +108,7 @@
     //id aux = self.listadoCiudadesPaises ;
     //self.resultadoBusqueda = [[aux valueForKey:@"name"] filteredArrayUsingPredicate:resultPredicate];
     //dispatch_async(dispatch_get_main_queue(), ^{
-        //[_resultadoBusqueda removeAllObjects];
+        [_resultadoBusqueda removeAllObjects];
         int count = 0;
         for (id strObj in _listadoCiudadesPaises)
         {
@@ -132,6 +130,10 @@
     [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:@"Title"];
     return YES;
 }
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
+    [_resultadoBusqueda removeAllObjects];
+}
+
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     [_resultadoBusqueda removeAllObjects];
 }

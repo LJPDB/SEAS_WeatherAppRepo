@@ -10,6 +10,7 @@
 #import "InternetWeatherSource.h"
 
 @interface AppDelegate ()
+@property (nonatomic) UserActualLocation *auxLocationObj;
 @end
 
 @implementation AppDelegate
@@ -73,7 +74,6 @@
         [[NSUbiquitousKeyValueStore defaultStore] setObject:preferenciasAUX forKey:@"preferencias"];
         [[NSUbiquitousKeyValueStore defaultStore] synchronize];
     }
-    
 }
 
 @end

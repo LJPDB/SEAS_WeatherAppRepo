@@ -34,7 +34,6 @@
     [_weatherWebsiteObject inicializarValoresAPIKeyResultado];
     _weatherWebsiteObject.JSONchangedDelegate = self;
     
-    //[_weatherWebsiteObject obtenerDatosPorNombre:@"Venezuela" conUnidadMedida:@"metric" enIdioma:@"es"];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL fillCitiesCountries = [_weatherWebsiteObject cargaMasivaCiudadesPaises];
         if (fillCitiesCountries) {
@@ -162,8 +161,6 @@
     }
     // Create a new view controller and pass suitable data.
     PageContentViewController *pageContentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageContentViewController"];
-    //pageContentViewController.labelTestContentView.text = self.pageTitles[index];
-    //[pageContentViewController.viewDidLoad]
     
     NSString *locName = [NSString stringWithFormat:@"%@", [self.pageTitles[index] valueForKey:@"locationName"]];
     NSString *locParent = [NSString stringWithFormat:@"%@", [self.pageTitles[index] valueForKey:@"locationParent"]];
@@ -363,6 +360,32 @@
             NSLog(@"existe en icloud");
             variablePreferenciasAuxiliar = [[NSUbiquitousKeyValueStore defaultStore] objectForKey:@"preferencias"];
             [NSKeyedArchiver archiveRootObject:variablePreferenciasAuxiliar toFile:[_weatherWebsiteObject directorioPlistPreferencias]];
+            NSMutableArray *auxLocationsList = [NSKeyedUnarchiver unarchiveObjectWithFile:[_weatherWebsiteObject directorioPlist]];
+            if (auxLocationsList) {
+                int i = 0;
+                BOOL exist = NO;
+                NSMutableArray *arregloIDsDeICloud = [[NSMutableArray alloc] initWithArray:[[variablePreferenciasAuxiliar valueForKey:@"localidades"] componentsSeparatedByString:@","]];
+                [arregloIDsDeICloud removeObjectAtIndex:0];
+                NSMutableArray *auxLocationsListCOPY = [[NSMutableArray alloc] initWithArray:auxLocationsList];
+                for (LocationWeatherObjetc *aux in auxLocationsList) {
+                    if (i==0) {
+                        i++;
+                    } else {
+                        NSString *stringIDFromFile = [NSString stringWithFormat:@"%@", [aux locationID]];
+                        for (NSString *IDdeICloud in arregloIDsDeICloud) {
+                            if (stringIDFromFile==IDdeICloud) {
+                                exist = YES;
+                            }
+                        }
+                        if(!exist){
+                            [auxLocationsListCOPY removeObjectAtIndex:i];
+                        }
+                        exist = NO;
+                        i++;
+                    }
+                }
+                [NSKeyedArchiver archiveRootObject:auxLocationsListCOPY toFile:[_weatherWebsiteObject directorioPlist]];
+            }
         }else{
             NSLog(@"no existe en icloud");
             if([[NSFileManager defaultManager] fileExistsAtPath:[_weatherWebsiteObject directorioPlistPreferencias]]){

@@ -23,13 +23,13 @@
         self.gestionadorUbicacion.delegate = self;
         
         // este valor nos dice que tan exacto queremos que sea la ubicacion
-        self.gestionadorUbicacion.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        self.gestionadorUbicacion.desiredAccuracy = 1500;
         
         // este valor, cada cuantos metros debe indicarnos posicion (metros referidos a nuestro movimiento), por razones de visualizar los cambios pondremos una configuracion que nos dara constantes actualizaciones con kCLDistanceFilterNone...
         //self.locationManager.distanceFilter = 200;
         self.gestionadorUbicacion.distanceFilter = 1500;
         //self.locationManager.pausesLocationUpdatesAutomatically = NO;
-        //self.gestionadorUbicacion.allowsBackgroundLocationUpdates = YES;
+        self.gestionadorUbicacion.allowsBackgroundLocationUpdates = YES;
         
         // comienza el servicio...
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -61,8 +61,8 @@
     CLLocation* location = [locations lastObject];
     NSDate* eventDate = location.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-    [self.locationChangedDelegate locationDidChange:location];
-    if (fabs(howRecent) < 15.0) {
+    //[self.locationChangedDelegate locationDidChange:location];
+    if (fabs(howRecent) > -10.0) {
         // If the event is recent, do something with it.
         [self.locationChangedDelegate locationDidChange:location];
         //NSLog(@"UserActualLocation (locationManager didUpdateLocation): latitude %+.6f, longitude %+.6f\n\n\n",
@@ -79,20 +79,24 @@
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
     switch (status) {
         case kCLAuthorizationStatusNotDetermined: {
-            [manager startUpdatingLocation];
+            [self.gestionadorUbicacion stopMonitoringSignificantLocationChanges];
             
         } break;
         case kCLAuthorizationStatusDenied: {
-            [manager stopUpdatingLocation];
+            [self.gestionadorUbicacion stopMonitoringSignificantLocationChanges];
             
         } break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
         case kCLAuthorizationStatusAuthorizedAlways: {
-            [manager startUpdatingLocation];
+            [self.gestionadorUbicacion stopMonitoringSignificantLocationChanges];
         } break;
         default:
             break;
     }
+}
+
+-(void)detenerMonitorLocalizacion{
+    [self.gestionadorUbicacion stopMonitoringSignificantLocationChanges];
 }
 
 -(void)revisarPermisosLocalizacion{
@@ -107,6 +111,11 @@
         });
     }
 
+}
+
++(void)stopLocationManagerMonitor{
+    UserActualLocation *aux;
+    [aux detenerMonitorLocalizacion];
 }
 
 @end
