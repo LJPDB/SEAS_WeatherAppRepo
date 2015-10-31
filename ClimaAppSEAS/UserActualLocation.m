@@ -61,7 +61,7 @@
     CLLocation* location = [locations lastObject];
     NSDate* eventDate = location.timestamp;
     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-    //[self.locationChangedDelegate locationDidChange:location];
+    [self.locationChangedDelegate locationDidChange:location];
     if (fabs(howRecent) > -10.0) {
         // If the event is recent, do something with it.
         [self.locationChangedDelegate locationDidChange:location];

@@ -16,13 +16,13 @@
 		875423441B8649D800903345 /* iPhoneMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 875423421B8649D800903345 /* iPhoneMain.storyboard */; };
 		875423451B8649D800903345 /* iPadMain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 875423431B8649D800903345 /* iPadMain.storyboard */; };
 		875423481B864C1C00903345 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 875423471B864C1C00903345 /* LaunchScreen.xib */; };
-		87586A2C1BB063FD00B98B7E /* JSON_locationsResourceDocs in Resources */ = {isa = PBXBuildFile; fileRef = 87586A2B1BB063FD00B98B7E /* JSON_locationsResourceDocs */; settings = {ASSET_TAGS = (); }; };
-		87586A2E1BB091B100B98B7E /* city.list.json in Resources */ = {isa = PBXBuildFile; fileRef = 87586A2D1BB091B100B98B7E /* city.list.json */; settings = {ASSET_TAGS = (); }; };
+		87586A2C1BB063FD00B98B7E /* JSON_locationsResourceDocs in Resources */ = {isa = PBXBuildFile; fileRef = 87586A2B1BB063FD00B98B7E /* JSON_locationsResourceDocs */; };
+		87586A2E1BB091B100B98B7E /* city.list.json in Resources */ = {isa = PBXBuildFile; fileRef = 87586A2D1BB091B100B98B7E /* city.list.json */; };
 		8769A1C51B90CCD10050FCC4 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1C41B90CCD10050FCC4 /* PageContentViewController.m */; };
 		8769A1C81B90E3CE0050FCC4 /* PresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1C71B90E3CE0050FCC4 /* PresentationViewController.m */; };
 		8769A1CB1B924F4F0050FCC4 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1CA1B924F4F0050FCC4 /* SettingsViewController.m */; };
 		8769A1CE1B926D4A0050FCC4 /* AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8769A1CD1B926D4A0050FCC4 /* AddLocationViewController.m */; };
-		87A1F50D1BBE1ED100799BE0 /* FavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 87A1F50C1BBE1ED100799BE0 /* FavoriteTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		87A1F50D1BBE1ED100799BE0 /* FavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 87A1F50C1BBE1ED100799BE0 /* FavoriteTableViewController.m */; };
 		87D8FCD11B9E074F00FD2F5E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87D8FCD01B9E074F00FD2F5E /* CloudKit.framework */; };
 		87F5BC261B7AF67300F1EB07 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F5BC251B7AF67300F1EB07 /* main.m */; };
 		87F5BC291B7AF67300F1EB07 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F5BC281B7AF67300F1EB07 /* AppDelegate.m */; };

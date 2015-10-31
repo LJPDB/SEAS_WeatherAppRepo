@@ -54,7 +54,7 @@
         _objetoUbicacion.locationChangedDelegate = self;
         
         if (_objetoUbicacion.requestForLocatePermission) {
-           // [_objetoUbicacion ubicacionActual];
+            [_objetoUbicacion ubicacionActual];
         } else {
             NSMutableArray *listaIDLocalidadesAlmacenadas = [self obtenerListaLocalidades];
             if (![listaIDLocalidadesAlmacenadas[0]isEqualToString:@"empty"]) {
